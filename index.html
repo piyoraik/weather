@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="ja">
+
+<head>
+	<meta charset="UTF-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+	<title>Document</title>
+</head>
+
+<body>
+	<button id="submit" type="button" value="270000" onclick="submit(this.value)">Send</button>
+
+	<script type="text/javascript">
+		const weatherFetch = async (weather_code) => {
+			const weather = await axios.post("http://localhost:3000", { weather_code })
+				.then(res => {
+					return res.data
+				})
+				.catch(err => {
+					console.error(err)
+				})
+			return weather
+		}
+
+		const htmlInsert = (value) => {
+			document.getElementById('submit').insertAdjacentHTML('afterend', value)
+		}
+
+		const submit = async (value) => {
+			const json = await weatherFetch(value)
+			json.error ? htmlInsert(json.error) : htmlInsert(json.description.bodyText)
+		}
+	</script>
+</body>
+
+</html>
